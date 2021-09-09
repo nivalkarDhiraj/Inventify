@@ -1,9 +1,12 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const User = require("../models/innovator");
+const Investor = require("../models/investor");
+const Innovator = require("../models/innovator");
 
 module.exports = (req, res, next) => {
-	if(!req.headers){
+	const { userType } = req.body;
+
+	if (!req.headers || !userType || (userType != "innovator" && userType != "investor")) {
 		res.status(401).json({ error: "You must be logged in" });
 		res.end();
 	}
@@ -17,12 +20,22 @@ module.exports = (req, res, next) => {
 			if (error) {
 				return res.status(401).json({ error: error });
 			} else {
-				const _id  = payload.id;
-				User.findById(_id).select("-password").then((userData) => {
-					req.user = userData;
-                    next();
-				});
-                
+				const _id = payload.id;
+				if (userType === "innovator") {
+					Innovator.findById(_id)
+						.select("-password")
+						.then((userData) => {
+							req.innovator = userData;
+							next();
+						});
+				} else if (userType === "investor") {
+					Investor.findById(_id)
+						.select("-password")
+						.then((userData) => {
+							req.investor = userData;
+							next();
+						});
+				}
 			}
 		});
 	}

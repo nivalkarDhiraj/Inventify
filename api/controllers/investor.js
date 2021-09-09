@@ -1,4 +1,4 @@
-const Innovator = require("../models/innovator");
+const Investor = require("../models/investor");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -14,7 +14,7 @@ module.exports.signup = (req, res) => {
 		district,
 		state,
 		pincode,
-		occupation,
+		business,
 	} = req.body;
 
 	if (
@@ -26,19 +26,19 @@ module.exports.signup = (req, res) => {
 		!district ||
 		!state ||
 		!pincode ||
-		!occupation
+		!business
 	) {
 		return res.status(400).json({ message: "please enter all fieds" });
 	}
-	Innovator.findOne({ email: email }).then((innovator) => {
-		if (innovator) {
+	Investor.findOne({ email: email }).then((investor) => {
+		if (investor) {
 			return res.status(400).json({ message: "User already exist" });
 		} else {
 			//create salt and hash
 			bcrypt.genSalt(10, (err, salt) => {
 				bcrypt.hash(password, salt, (err, hash) => {
 					if (err) throw err;
-					const newInnovator = new Innovator({
+					const newInvestor = new Investor({
 						name,
 						email,
 						password: hash,
@@ -48,14 +48,14 @@ module.exports.signup = (req, res) => {
 						district,
 						state,
 						pincode,
-						occupation,
+						business,
 					});
-					newInnovator
+					newInvestor
 						.save()
-						.then((innovator) => {
+						.then((investor) => {
 							// console.log(user);
 							jwt.sign(
-								{ id: innovator._id },
+								{ id: investor._id },
 								process.env.JWT_KEY,
 								{
 									/*expiresIn: 3600*/
@@ -66,7 +66,7 @@ module.exports.signup = (req, res) => {
 									}
 									return res
 										.status(200)
-										.json({ token: token, user: { id: innovator._id, name: innovator.name, email: innovator.email } });
+										.json({ token: token, investor: { id: investor._id, name: investor.name, email: investor.email } });
 								}
 							);
 						})
@@ -86,8 +86,8 @@ module.exports.login = (req, res) => {
 	if (!email || !password) {
 		return res.status(400).json({ message: "Please enter all the fields." });
 	}
-	User.findOne({ email: email }).then((innovator) => {
-		if (!innovator) {
+	Investor.findOne({ email: email }).then((investor) => {
+		if (!user) {
 			return res.status(400).json({ message: "User does not exist." });
 		}
 		//password validation
@@ -96,7 +96,7 @@ module.exports.login = (req, res) => {
 				return res.status(400).json({ message: "Invalid email or password." });
 			}
 			jwt.sign(
-				{ id: innovator._id },
+				{ id: user._id },
 				process.env.JWT_KEY,
 				{
 					/*expiresIn: 3600*/
@@ -107,7 +107,7 @@ module.exports.login = (req, res) => {
 					}
 					return res
 						.status(200)
-						.json({ token: token, user: { id: innovator._id, name: innovator.name, email: innovator.email } }); //remove user later
+						.json({ token: token, investor: { id: investor._id, name: investor.name, email: investor.email } }); 
 				}
 			);
 		});

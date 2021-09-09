@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/innovator');
+const innovatorController = require('../controllers/innovator');
 const checkAuth = require('../middlewares/checkAuth');
 
-router.post('/signup', userController.signup); //user signup
-router.post('/login', userController.login);   //user login
+router.post('/signup', innovatorController.signup); 
+router.post('/login', innovatorController.login);  
 
 module.exports = router;
