@@ -66,7 +66,7 @@ module.exports.signup = (req, res) => {
 									}
 									return res
 										.status(200)
-										.json({ token: token, user: { id: innovator._id, name: innovator.name, email: innovator.email } });
+										.json({ token: token, innovator: { id: innovator._id, name: innovator.name, email: innovator.email } });
 								}
 							);
 						})
@@ -86,7 +86,7 @@ module.exports.login = (req, res) => {
 	if (!email || !password) {
 		return res.status(400).json({ message: "Please enter all the fields." });
 	}
-	User.findOne({ email: email }).then((innovator) => {
+	Innovator.findOne({ email: email }).then((innovator) => {
 		if (!innovator) {
 			return res.status(400).json({ message: "User does not exist." });
 		}
@@ -107,7 +107,7 @@ module.exports.login = (req, res) => {
 					}
 					return res
 						.status(200)
-						.json({ token: token, user: { id: innovator._id, name: innovator.name, email: innovator.email } }); //remove user later
+						.json({ token: token, innovator: { id: innovator._id, name: innovator.name, email: innovator.email } }); //remove user later
 				}
 			);
 		});

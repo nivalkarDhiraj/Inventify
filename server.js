@@ -5,6 +5,7 @@ const morgan = require("morgan"); //logger
 const cors = require("cors");
 const innovatorRouter = require("./api/routes/innovator");
 const investorRouter = require("./api/routes/investor");
+const ideaRouter = require("./api/routes/idea");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
