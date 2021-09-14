@@ -87,16 +87,16 @@ module.exports.login = (req, res) => {
 		return res.status(400).json({ message: "Please enter all the fields." });
 	}
 	Investor.findOne({ email: email }).then((investor) => {
-		if (!user) {
+		if (!investor) {
 			return res.status(400).json({ message: "User does not exist." });
 		}
 		//password validation
-		bcrypt.compare(password, user.password).then((isMatch) => {
+		bcrypt.compare(password, investor.password).then((isMatch) => {
 			if (!isMatch) {
 				return res.status(400).json({ message: "Invalid email or password." });
 			}
 			jwt.sign(
-				{ id: user._id },
+				{ id: investor._id },
 				process.env.JWT_KEY,
 				{
 					/*expiresIn: 3600*/

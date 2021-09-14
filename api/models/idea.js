@@ -28,10 +28,10 @@ const ideaSchema = new mongoose.Schema({
 		type: "string",
 		required: true,
 	},
-	possessionAny: {
+	possessionAny: [{
 		type: "string",
 		required: true,
-	},
+	}],
 	image: [
 		{
 			type: "string",
