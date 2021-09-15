@@ -91,7 +91,7 @@ module.exports.login = (req, res) => {
 			return res.status(400).json({ message: "User does not exist." });
 		}
 		//password validation
-		bcrypt.compare(password, user.password).then((isMatch) => {
+		bcrypt.compare(password, innovator.password).then((isMatch) => {
 			if (!isMatch) {
 				return res.status(400).json({ message: "Invalid email or password." });
 			}

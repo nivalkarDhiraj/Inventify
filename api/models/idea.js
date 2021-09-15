@@ -3,50 +3,80 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const ideaSchema = new mongoose.Schema({
 	title: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	category: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	description: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	innovative: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	competitors: [
 		{
-			type: "string",
-			required: true,
+			type: "String",
 		},
 	],
 	completedAny: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
-	possessionAny: [{
-		type: "string",
-		required: true,
-	}],
+	possessionAny: [
+		{
+			type: "String",
+		},
+	],
 	image: [
 		{
-			type: "string",
-			required: true,
+			type: "String",
 		},
 	],
 	patent: {
 		type: "Boolean",
-		required: true,
+		default: false,
 	},
-
-	interested_ideas: [
+	pendingPatent: {
+		type: "Boolean",
+		default: false,
+	},
+	comeUpWithInvention: {
+		type: "Boolean",
+		default: false,
+	},
+	disclosedToPublic: {
+		type: "Boolean",
+		default: false,
+	},
+	explainedInPublic: {
+		type: "Boolean",
+		default: false,
+	},
+	rememberDateOfInvention: {
+		type: "Boolean",
+		default: false,
+	},
+	websiteForInvention: {
+		type: "Boolean",
+		default: false,
+	},
+	anyoneElseContributed: {
+		type: "Boolean",
+		default: false,
+	},
+	anyoneKnowAboutInvention: {
+		type: "Boolean",
+		default: false,
+	},
+	created_by: [
 		{
 			type: ObjectId,
-			ref: "Idea",
+			ref: "Innovator",
 		},
 	],
 });

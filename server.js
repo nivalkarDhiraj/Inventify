@@ -8,7 +8,7 @@ const investorRouter = require("./api/routes/investor");
 const ideaRouter = require("./api/routes/idea");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -16,6 +16,7 @@ app.use(cors());
 
 app.use("/innovator", innovatorRouter);
 app.use("/investor", investorRouter);
+app.use("/idea", ideaRouter);
 app.get("/", (req, res) => res.send("Hello World!!!"));
 
 app.listen(PORT, () => {

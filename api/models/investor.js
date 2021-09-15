@@ -3,47 +3,47 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const investorSchema = new mongoose.Schema({
 	name: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	email: {
-		type: "string",
+		type: "String",
 		required: true,
 		unique: true,
 		match:
 			/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
 	},
 	password: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	profile_picture: {
-		type: "string",
+		type: "String",
 		default:
 			"https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png",
 	},
 	mobileno: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	city: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	district: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	state: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	pincode: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	business: {
-		type: "string",
+		type: "String",
 		required: true,
 	},
 	invested_ideas: [
