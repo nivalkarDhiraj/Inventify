@@ -92,3 +92,14 @@ module.exports.postIdea3 = (req, res) => {
 			return res.status(500).json({ message: error.message });
 		});
 };
+
+module.exports.getAll = (req, res) => {
+	Idea.find().populate({ 
+		path : "created_by"
+	}).then((ideas) => {
+		return res.status(201).json({ ideas });
+	})
+	.catch((error) => {
+		return res.status(500).json({ message: error.message });
+	});
+}

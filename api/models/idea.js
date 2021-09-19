@@ -6,10 +6,12 @@ const ideaSchema = new mongoose.Schema({
 		type: "String",
 		required: true,
 	},
-	category: {
-		type: "String",
-		required: true,
-	},
+	category: [
+		{
+			type: "String",
+			required: true,
+		},
+	],
 	description: {
 		type: "String",
 		required: true,
@@ -23,10 +25,12 @@ const ideaSchema = new mongoose.Schema({
 			type: "String",
 		},
 	],
-	completedAny: {
-		type: "String",
-		required: true,
-	},
+	completedAny: [
+		{
+			type: "String",
+			required: true,
+		},
+	],
 	possessionAny: [
 		{
 			type: "String",
