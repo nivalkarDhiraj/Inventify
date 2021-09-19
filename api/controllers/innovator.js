@@ -55,7 +55,7 @@ module.exports.signup = (req, res) => {
 						.then((innovator) => {
 							// console.log(user);
 							jwt.sign(
-								{ id: innovator._id },
+								{ id: innovator._id, userType: "innovator" },
 								process.env.JWT_KEY,
 								{
 									/*expiresIn: 3600*/
@@ -64,9 +64,14 @@ module.exports.signup = (req, res) => {
 									if (err) {
 										throw err;
 									}
-									return res
-										.status(200)
-										.json({ token: token, innovator: { id: innovator._id, name: innovator.name, email: innovator.email } });
+									return res.status(200).json({
+										token: token,
+										innovator: {
+											id: innovator._id,
+											name: innovator.name,
+											email: innovator.email,
+										},
+									});
 								}
 							);
 						})
@@ -96,7 +101,7 @@ module.exports.login = (req, res) => {
 				return res.status(400).json({ message: "Invalid email or password." });
 			}
 			jwt.sign(
-				{ id: innovator._id },
+				{ id: innovator._id, userType: "innovator" },
 				process.env.JWT_KEY,
 				{
 					/*expiresIn: 3600*/
@@ -105,9 +110,10 @@ module.exports.login = (req, res) => {
 					if (err) {
 						throw err;
 					}
-					return res
-						.status(200)
-						.json({ token: token, innovator: { id: innovator._id, name: innovator.name, email: innovator.email } }); //remove user later
+					return res.status(200).json({
+						token: token,
+						innovator: { id: innovator._id, name: innovator.name, email: innovator.email },
+					}); //remove user later
 				}
 			);
 		});
@@ -115,15 +121,17 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.profile = (req, res) => {
-	const {innovatorId} = req.innovator_id; 
+	const { innovatorId } = req.innovator_id;
 
-	Innovator.findById(innovatorId).populate({ 
-		path : "ideas",
-		select : "-created_by"
-	}).then((innovator) => {
-		return res.status(201).json(innovator);
-	})
-	.catch((error) => {
-		return res.status(500).json({ message: error.message });
-	});
-}
+	Innovator.findById(innovatorId)
+		.populate({
+			path: "ideas",
+			select: "-created_by",
+		})
+		.then((innovator) => {
+			return res.status(201).json(innovator);
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};

@@ -55,7 +55,7 @@ module.exports.signup = (req, res) => {
 						.then((investor) => {
 							// console.log(user);
 							jwt.sign(
-								{ id: investor._id },
+								{ id: investor._id, userType: "investor" },
 								process.env.JWT_KEY,
 								{
 									/*expiresIn: 3600*/
@@ -96,7 +96,7 @@ module.exports.login = (req, res) => {
 				return res.status(400).json({ message: "Invalid email or password." });
 			}
 			jwt.sign(
-				{ id: investor._id },
+				{ id: investor._id, userType: "investor" },
 				process.env.JWT_KEY,
 				{
 					/*expiresIn: 3600*/

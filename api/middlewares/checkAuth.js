@@ -4,8 +4,6 @@ const Investor = require("../models/investor");
 const Innovator = require("../models/innovator");
 
 module.exports = (req, res, next) => {
-	const { userType } = req.body;
-
 	if (!req.headers || !userType || (userType != "innovator" && userType != "investor")) {
 		res.status(401).json({ error: "You must be logged in" });
 		res.end();
@@ -21,6 +19,7 @@ module.exports = (req, res, next) => {
 				return res.status(401).json({ error: error });
 			} else {
 				const _id = payload.id;
+				const { userType } = payload;
 				if (userType === "innovator") {
 					Innovator.findById(_id)
 						.select("-password")
