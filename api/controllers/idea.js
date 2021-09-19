@@ -1,5 +1,6 @@
 const Idea = require("../models/idea");
 const Innovator = require("../models/innovator");
+const Investor = require("../models/investor");
 
 module.exports.postIdea1 = (req, res) => {
 	const { title, category, description, innovative, competitors, completedAny, possessionAny } =
@@ -129,6 +130,27 @@ module.exports.getOne = (req, res) => {
 		})
 		.then((idea) => {
 			return res.status(201).json(idea);
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};
+
+module.exports.interested = (req, res) => {
+	const { ideaId } = req.params;
+	const investorId = req.investor._id;
+
+	Idea.findById(ideaId)
+		.then(() => {
+			Investor.findByIdAndUpdate(investorId, {
+				$push: { interested_ideas: ideaId },
+			})
+				.then(() => {
+					return res.status(201).json("Idea has been added to your interested ideas list");
+				})
+				.catch((error) => {
+					return res.status(500).json({ message: error.message });
+				});
 		})
 		.catch((error) => {
 			return res.status(500).json({ message: error.message });
