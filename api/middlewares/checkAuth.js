@@ -4,7 +4,7 @@ const Investor = require("../models/investor");
 const Innovator = require("../models/innovator");
 
 module.exports = (req, res, next) => {
-	if (!req.headers || !userType || (userType != "innovator" && userType != "investor")) {
+	if (!req.headers) {
 		res.status(401).json({ error: "You must be logged in" });
 		res.end();
 	}
