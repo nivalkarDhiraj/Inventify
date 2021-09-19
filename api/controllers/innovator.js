@@ -113,3 +113,17 @@ module.exports.login = (req, res) => {
 		});
 	});
 };
+
+module.exports.profile = (req, res) => {
+	const {innovatorId} = req.innovator_id; 
+
+	Innovator.findById(innovatorId).populate({ 
+		path : "ideas",
+		select : "-created_by"
+	}).then((innovator) => {
+		return res.status(201).json(innovator);
+	})
+	.catch((error) => {
+		return res.status(500).json({ message: error.message });
+	});
+}

@@ -113,3 +113,19 @@ module.exports.login = (req, res) => {
 		});
 	});
 };
+
+module.exports.profile = (req, res) => {
+	const investorId = req.investor._id; 
+
+	console.log(investorId);
+
+	Investor.findById(investorId).populate({ 
+		path : "invested_ideas interested_ideas",
+		select : "-created_by"
+	}).then((investor) => {
+		return res.status(201).json(investor);
+	})
+	.catch((error) => {
+		return res.status(500).json({ message: error.message });
+	});
+}

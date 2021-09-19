@@ -1,8 +1,11 @@
 const Idea = require("../models/idea");
+const Innovator = require("../models/innovator");
 
 module.exports.postIdea1 = (req, res) => {
 	const { title, category, description, innovative, competitors, completedAny, possessionAny } =
 		req.body;
+
+	const innovatorId = req.innovator._id;
 
 	if (
 		!title ||
@@ -30,9 +33,18 @@ module.exports.postIdea1 = (req, res) => {
 	newIdea
 		.save()
 		.then((idea) => {
-			return res.status(200).json({
-				idea,
-			});
+			Innovator.findByIdAndUpdate(innovatorId, {
+				$push: { ideas: idea._id },
+			})
+				.then(() => {
+					return res.status(200).json({
+						idea,
+					});
+				})
+				.catch((error) => {
+					console.log(error);
+					return res.status(500).json({ error: "Error adding the idea." });
+				});
 		})
 		.catch((error) => {
 			console.log(error);
@@ -67,7 +79,7 @@ module.exports.postIdea3 = (req, res) => {
 		websiteForInvention,
 		anyoneElseContributed,
 		anyoneKnowAboutInvention,
-		ideaId
+		ideaId,
 	} = req.body;
 
 	if (!ideaId) {
@@ -94,12 +106,31 @@ module.exports.postIdea3 = (req, res) => {
 };
 
 module.exports.getAll = (req, res) => {
-	Idea.find().populate({ 
-		path : "created_by"
-	}).then((ideas) => {
-		return res.status(201).json({ ideas });
-	})
-	.catch((error) => {
-		return res.status(500).json({ message: error.message });
-	});
-}
+	Idea.find()
+		.populate({
+			path: "created_by",
+			select: "-password",
+		})
+		.then((ideas) => {
+			return res.status(201).json(ideas);
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};
+
+module.exports.getOne = (req, res) => {
+	const { ideaId } = req.params;
+
+	Idea.findById(ideaId)
+		.populate({
+			path: "created_by",
+			select: "-password",
+		})
+		.then((idea) => {
+			return res.status(201).json(idea);
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};
