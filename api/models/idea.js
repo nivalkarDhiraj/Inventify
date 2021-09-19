@@ -20,11 +20,9 @@ const ideaSchema = new mongoose.Schema({
 		type: "String",
 		required: true,
 	},
-	competitors: [
-		{
-			type: "String",
-		},
-	],
+	competitors: {
+		type: "String",
+	},
 	completedAny: [
 		{
 			type: "String",

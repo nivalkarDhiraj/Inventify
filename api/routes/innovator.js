@@ -5,6 +5,6 @@ const checkAuth = require('../middlewares/checkAuth');
 
 router.post('/signup', innovatorController.signup); 
 router.post('/login', innovatorController.login);  
-router.get('/:innovatorId', innovatorController.profile);
+router.get('/profile', innovatorController.profile);
 
 module.exports = router;
