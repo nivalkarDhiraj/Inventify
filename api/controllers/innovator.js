@@ -121,7 +121,7 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.profile = (req, res) => {
-	const innovatorId = req.innovator_id;
+	const innovatorId = req.innovator._id;
 
 	Innovator.findById(innovatorId)
 		.populate({
