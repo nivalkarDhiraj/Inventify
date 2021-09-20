@@ -76,12 +76,11 @@ const ideaSchema = new mongoose.Schema(
 			type: "Boolean",
 			default: false,
 		},
-		created_by: [
+		created_by: 
 			{
 				type: ObjectId,
 				ref: "Innovator",
 			},
-		],
 	},
 	{ timestamps: true }
 );
