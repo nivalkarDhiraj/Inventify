@@ -120,6 +120,21 @@ module.exports.getAll = (req, res) => {
 		});
 };
 
+module.exports.getAllWithTags = (req, res) => {
+	const {category} = req.query;
+	Idea.find({category})
+		.populate({
+			path: "created_by",
+			select: "-password",
+		})
+		.then((ideas) => {
+			return res.status(201).json(ideas);
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};
+
 module.exports.getOne = (req, res) => {
 	const { ideaId } = req.params;
 
