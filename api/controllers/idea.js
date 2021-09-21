@@ -141,16 +141,59 @@ module.exports.interested = (req, res) => {
 	const investorId = req.investor._id;
 
 	Idea.findById(ideaId)
-		.then(() => {
-			Investor.findByIdAndUpdate(investorId, {
-				$push: { interested_ideas: ideaId },
-			})
-				.then(() => {
-					return res.status(201).json("Idea has been added to your interested ideas list");
+		.then(async () => {
+			let isAlreadyInterested = false;
+			await Investor.findById(investorId).then((investor) => {
+				isAlreadyInterested = investor.interested_ideas.includes(ideaId);
+			});
+
+			if (isAlreadyInterested) {
+				return res.status(400).json({ message: "You already have this idea in interested list" });
+			} else {
+				Investor.findByIdAndUpdate(investorId, {
+					$push: { interested_ideas: ideaId },
 				})
-				.catch((error) => {
-					return res.status(500).json({ message: error.message });
-				});
+					.then(() => {
+						return res
+							.status(201)
+							.json({ message: "Idea has been added to your interested ideas list" });
+					})
+					.catch((error) => {
+						return res.status(500).json({ message: error.message });
+					});
+			}
+		})
+		.catch((error) => {
+			return res.status(500).json({ message: error.message });
+		});
+};
+
+module.exports.invest = (req, res) => {
+	const { ideaId } = req.params;
+	const investorId = req.investor._id;
+
+	Idea.findById(ideaId)
+		.then(async () => {
+			let isAlreadyInvested = false;
+			await Investor.findById(investorId).then((investor) => {
+				isAlreadyInvested = investor.invested_ideas.includes(ideaId);
+			});
+
+			if (isAlreadyInvested) {
+				return res.status(400).json({ message: "You already have this idea in invested list" });
+			} else {
+				Investor.findByIdAndUpdate(investorId, {
+					$push: { invested_ideas: ideaId },
+				})
+					.then(() => {
+						return res
+							.status(201)
+							.json({ message: "Idea has been added to your invested ideas list" });
+					})
+					.catch((error) => {
+						return res.status(500).json({ message: error.message });
+					});
+			}
 		})
 		.catch((error) => {
 			return res.status(500).json({ message: error.message });
